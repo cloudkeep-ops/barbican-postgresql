@@ -62,3 +62,6 @@ unless Chef::Config[:solo]
   node.save
   include_recipe 'barbican-postgresql::_newrelic'
 end
+
+# Perform final configuration on the server.
+include_recipe 'barbican::_final'
