@@ -17,12 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe 'barbican::_base'
-
-postgres_bag = data_bag_item("#{node.chef_environment}", 'postgresql')
-node.set['postgresql']['password']['postgres'] = postgres_bag['password']['postgres']
-node.set['postgresql']['password']['barbican'] = postgres_bag['password']['barbican']
-
 include_recipe 'postgresql'
 include_recipe 'postgresql::server'
 include_recipe 'database::postgresql'
@@ -54,14 +48,3 @@ postgresql_database_user 'barbican' do
   privileges [:all]
   action :grant
 end
-
-# Configure NewRelic on this PostgreSQL server.
-unless Chef::Config[:solo]
-  node.set[:meetme_newrelic_plugin][:postgres][:host] = node[:ipaddress]
-  node.set[:meetme_newrelic_plugin][:postgres][:password] = node['postgresql']['password']['postgres']
-  node.save
-  include_recipe 'barbican-postgresql::_newrelic'
-end
-
-# Perform final configuration on the server.
-include_recipe 'barbican::_final'
