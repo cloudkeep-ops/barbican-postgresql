@@ -9,11 +9,11 @@ Vagrant.configure("2") do |config|
   config.vm.hostname = "barbican-postgresql-berkshelf"
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "opscode-centos-6.4"
+  config.vm.box = "centos-6.5"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box"
+  config.vm.box_url = "https://ca9f9b62ae1b1e47c4f8-989e703834df24142dff402333777a7c.ssl.cf1.rackcdn.com/centos-6.5-provisionerless.box"
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
