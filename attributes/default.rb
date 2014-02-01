@@ -50,4 +50,6 @@ normal['postgresql']['pg_hba'] = [
     :method => 'md5'
   }
 ]
-
+# Attribute to pass to PGTune so that it knows what type of system we're going
+# to run.
+set['postgresql']['config_pgtune']['db_type'] = 'oltp'

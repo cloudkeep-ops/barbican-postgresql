@@ -19,6 +19,8 @@
 
 include_recipe 'postgresql'
 include_recipe 'postgresql::server'
+# For use with PGTune.
+include_recipe 'postgresql::config_pgtune'
 include_recipe 'database::postgresql'
 
 # This connection info is used later in the recipe by the resources to connect to the DB
