@@ -1,3 +1,4 @@
+default['node_group']['tag'] = 'database'
 
 default['postgresql']['password']['barbican'] = 'barbican'
 default['postgresql']['password']['postgres'] = 'barbican'
