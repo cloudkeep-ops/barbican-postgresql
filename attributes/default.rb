@@ -1,11 +1,16 @@
-set['postgresql']['enable_pgdg_yum'] = true
-set['postgresql']['version'] = '9.2'
-set['postgresql']['dir'] = '/var/lib/pgsql/9.2/data'
-set['postgresql']['server']['packages'] = %w{ postgresql92-server }
-set['postgresql']['server']['service_name'] = 'postgresql-9.2'
-set['postgresql']['contrib']['packages'] = %w{ postgresql92-contrib }
-set['postgresql']['config']['listen_addresses'] = '*'
-set['postgresql']['pg_hba'] = [
+default['node_group']['tag'] = 'database'
+
+default['postgresql']['password']['barbican'] = 'barbican'
+default['postgresql']['password']['postgres'] = 'barbican'
+
+normal['postgresql']['enable_pgdg_yum'] = true
+normal['postgresql']['version'] = '9.2'
+normal['postgresql']['dir'] = '/var/lib/pgsql/9.2/data'
+normal['postgresql']['server']['packages'] = %w{ postgresql92-server }
+normal['postgresql']['server']['service_name'] = 'postgresql-9.2'
+normal['postgresql']['contrib']['packages'] = %w{ postgresql92-contrib }
+normal['postgresql']['config']['listen_addresses'] = '*'
+normal['postgresql']['pg_hba'] = [
   {
     :comment => "# 'local' is for Unix domain socket connections only",
     :type => 'local',

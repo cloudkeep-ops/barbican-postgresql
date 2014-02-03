@@ -1,5 +1,5 @@
 site :opscode
 
-metadata
+cookbook 'postgresql', github: 'opscode-cookbooks/postgresql', tag: 'v3.2.0'
 
-cookbook 'barbican', path: '../barbican'
+metadata
