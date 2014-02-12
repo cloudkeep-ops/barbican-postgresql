@@ -24,8 +24,8 @@ include_recipe 'postgresql::config_pgtune'
 include_recipe 'database::postgresql'
 
 # This connection info is used later in the recipe by the resources to connect to the DB
-postgresql_connection_info = { :host => "localhost",
-                               :port => "5432",
+postgresql_connection_info = { :host => node['postgresql']['config']['listen_addresses'],
+                               :port => node['postgresql']['config']['port'],
                                :username => 'postgres',
                                :password => node['postgresql']['password']['postgres'] }
 
