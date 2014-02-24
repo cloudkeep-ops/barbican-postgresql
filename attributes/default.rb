@@ -3,6 +3,9 @@ default['node_group']['tag'] = 'database'
 default['postgresql']['password']['barbican'] = 'barbican'
 default['postgresql']['password']['postgres'] = 'barbican'
 
+default['postgresql']['db_actions']['retries'] = 3
+default['postgresql']['db_actions']['retry_delay'] = 30
+
 normal['postgresql']['enable_pgdg_yum'] = true
 normal['postgresql']['version'] = '9.2'
 normal['postgresql']['dir'] = '/var/lib/pgsql/9.2/data'
