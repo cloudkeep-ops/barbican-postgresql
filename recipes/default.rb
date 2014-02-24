@@ -33,6 +33,8 @@ postgresql_connection_info = { :host => node['postgresql']['config']['listen_add
 postgresql_database 'barbican_api' do
   connection postgresql_connection_info
   action :create
+  retries 3
+  retry_delay 30
 end
 
 # Creates a user called 'barbican' and sets their password
@@ -41,6 +43,8 @@ database_user 'barbican' do
   password node['postgresql']['password']['barbican']
   provider Chef::Provider::Database::PostgresqlUser
   action :create
+  retries 3
+  retry_delay 30
 end
 
 #  Grants all privileges on 'barbican_api' to user 'barbican'
@@ -49,4 +53,6 @@ postgresql_database_user 'barbican' do
   database_name 'barbican_api'
   privileges [:all]
   action :grant
+  retries 3
+  retry_delay 30
 end
