@@ -13,7 +13,6 @@ describe 'barbican-postgresql::default' do
    # uses default queue values of databag not specified
   it 'uses default barbican password' do
     expect(chef_run.node['postgresql']['password']['barbican']).to eq 'barbican'
-    expect(chef_run).to create_postgresql_database('barbican_api')
   end
 
   it 'creates barbican_api database' do

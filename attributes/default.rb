@@ -1,7 +1,6 @@
 default['node_group']['tag'] = 'database'
 
 default['postgresql']['password']['barbican'] = 'barbican'
-default['postgresql']['password']['postgres'] = 'barbican'
 
 default['postgresql']['db_actions']['retries'] = 3
 default['postgresql']['db_actions']['retry_delay'] = 30
@@ -56,4 +55,4 @@ normal['postgresql']['pg_hba'] = [
 ]
 # Attribute to pass to PGTune so that it knows what type of system we're going
 # to run.
-set['postgresql']['config_pgtune']['db_type'] = 'oltp'
+normal['postgresql']['config_pgtune']['db_type'] = 'oltp'
