@@ -7,11 +7,11 @@ default['postgresql']['db_actions']['retries'] = 3
 default['postgresql']['db_actions']['retry_delay'] = 30
 
 normal['postgresql']['enable_pgdg_yum'] = true
-normal['postgresql']['version'] = '9.2'
-normal['postgresql']['dir'] = '/var/lib/pgsql/9.2/data'
-normal['postgresql']['server']['packages'] = %w{ postgresql92-server }
-normal['postgresql']['server']['service_name'] = 'postgresql-9.2'
-normal['postgresql']['contrib']['packages'] = %w{ postgresql92-contrib }
+normal['postgresql']['version'] = '9.3'
+normal['postgresql']['dir'] = '/var/lib/pgsql/9.3/data'
+normal['postgresql']['server']['packages'] = %w{ postgresql93-server }
+normal['postgresql']['server']['service_name'] = 'postgresql-9.3'
+normal['postgresql']['contrib']['packages'] = %w{ postgresql93-contrib }
 normal['postgresql']['config']['listen_addresses'] = '*'
 normal['postgresql']['pg_hba'] = [
   {
@@ -49,7 +49,7 @@ normal['postgresql']['pg_hba'] = [
     :comment => '# Open IPv6 localhost comms with database',
     :type => 'host',
     :db => 'all',
-    :user => 'all', 
+    :user => 'all',
     :addr => '::1/128',
     :method => 'md5'
   }
