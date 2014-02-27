@@ -24,7 +24,13 @@ include_recipe 'postgresql::config_pgtune'
 include_recipe 'database::postgresql'
 
 # This connection info is used later in the recipe by the resources to connect to the DB
-postgresql_connection_info = { :host => node['postgresql']['config']['listen_addresses'],
+# Database creation and user calls must be made to localhost.
+# Even if postgres is bound to a new listening address it will not have restarted before these
+# database and user resources are executed.
+#
+# Wrapper cookbooks should bind to a selected address as well as localhost
+# via node['postgresql']['config']['listen_addresses']
+postgresql_connection_info = { :host => 'localhost',
                                :port => node['postgresql']['config']['port'],
                                :username => 'postgres',
                                :password => node['postgresql']['password']['postgres'] }
