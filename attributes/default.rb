@@ -12,6 +12,7 @@ normal['postgresql']['server']['packages'] = %w{ postgresql93-server }
 normal['postgresql']['server']['service_name'] = 'postgresql-9.3'
 normal['postgresql']['contrib']['packages'] = %w{ postgresql93-contrib }
 normal['postgresql']['config']['listen_addresses'] = '*'
+
 normal['postgresql']['pg_hba'] = [
   {
     :comment => "# 'local' is for Unix domain socket connections only",

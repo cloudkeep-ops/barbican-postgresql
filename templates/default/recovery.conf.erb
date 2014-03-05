@@ -1,0 +1,6 @@
+standby_mode = 'on'
+trigger_file = '/tmp/psql.trigger'
+primary_conninfo = 'host=<%= @ip -%> port=5432 user=repmgr'
+recovery_target_timeline = 'latest'
+# Comment out if we actually need the slave to catch up with its WAL records.
+#restore_command = 'cp <%= node['postgresql']['pg_wal_dir'] %>/%f %p'
