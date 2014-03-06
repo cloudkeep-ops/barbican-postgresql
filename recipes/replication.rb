@@ -35,8 +35,11 @@ directory node['postgresql']['pg_wal_dir'] do
   mode '0700'
   action :create
 end
+# ssh keys are used to rsync log files between
+# master and slave postgres nodes.  The below
+# templates create the key files for the postgres user
 
-# Create pg_wal directory for storing of WAL records
+# Create .ssh directory for postgres user
 directory '/var/lib/pgsql/.ssh/' do
   owner 'postgres'
   group 'postgres'
@@ -44,6 +47,7 @@ directory '/var/lib/pgsql/.ssh/' do
   action :create
 end
 
+# Create private for key postgres user
 template '/var/lib/pgsql/.ssh/id_rsa' do
   source 'id_rsa.erb'
   owner 'postgres'
@@ -51,6 +55,7 @@ template '/var/lib/pgsql/.ssh/id_rsa' do
   mode '0600'
 end
 
+# Create public key postgres user
 template '/var/lib/pgsql/.ssh/id_rsa.pub' do
   source 'id_rsa.pub.erb'
   owner 'postgres'
@@ -58,6 +63,7 @@ template '/var/lib/pgsql/.ssh/id_rsa.pub' do
   mode '0600'
 end
 
+# place public key in authorized keys
 template '/var/lib/pgsql/.ssh/authorized_keys' do
   source 'authorized_keys.erb'
   owner 'postgres'
@@ -66,8 +72,10 @@ template '/var/lib/pgsql/.ssh/authorized_keys' do
 end
 
 if node['postgresql']['replication']['initialized']
+  # if the node was already initialized, run the appropriate replication steps
   include_recipe 'barbican-postgresql::replication_master' if node['postgresql']['replication']['node_type'] == 'master'
   include_recipe 'barbican-postgresql::replication_slave' if node['postgresql']['replication']['node_type'] == 'slave'
 else
+  # this was the first run to set up keys, mark node as initialized
   node.set['postgresql']['replication']['initialized'] = true
 end

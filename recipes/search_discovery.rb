@@ -8,7 +8,7 @@ unless Chef::Config[:solo]
 
   # make a single search call to the chef server api, and then select out the master and slave results
   postgres_nodes = search(:node, node['postgresql']['discovery']['search_query'])
-  master = postgres_nodes.select { |p_node| p_node['postgresql']['replication']['node_type'] == 'master' }[0]
+  master = postgres_nodes.select { |p_node| p_node['postgresql']['replication']['node_type'] == 'master' }[0] || nil
   slaves = postgres_nodes.select { |p_node| p_node['postgresql']['replication']['node_type'] == 'slave' }
 
   Chef::Log.info "master result: #{master}"

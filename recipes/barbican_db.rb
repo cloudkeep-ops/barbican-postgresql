@@ -11,7 +11,7 @@ postgresql_connection_info = { :host => 'localhost',
                                :username => 'postgres',
                                :password => node['postgresql']['password']['postgres'] }
 
-# Creates a database called 'barbican'
+# Creates a database called 'barbican_api'
 postgresql_database 'barbican_api' do
   connection postgresql_connection_info
   action :create
