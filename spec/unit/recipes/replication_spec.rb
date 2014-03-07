@@ -28,7 +28,7 @@ describe 'barbican-postgresql::replication' do
     expect(chef_run).to create_directory('/var/lib/pgsql/.ssh/').with(
       :owner => 'postgres',
       :group => 'postgres',
-      :mode => '0755',
+      :mode => '0700',
       :action => [:create]
     )
   end

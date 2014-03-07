@@ -1,5 +1,6 @@
 default['node_group']['tag'] = 'database'
 
+default['postgresql']['password']['postgres'] = 'postgres' # this is only set for chef-solo
 default['postgresql']['password']['barbican'] = 'barbican'
 
 default['postgresql']['db_actions']['retries'] = 3

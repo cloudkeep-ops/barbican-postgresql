@@ -1,0 +1,72 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.require_plugin "vagrant-chef-zero"
+Vagrant.require_plugin "vagrant-berkshelf"
+
+Vagrant.configure("2") do |config|
+
+  # Berkshelf plugin configuration
+  config.berkshelf.enabled = true
+
+  # Chef-Zero plugin configuration
+  config.chef_zero.enabled = true
+
+  # Omnibus plugin configuration
+  config.omnibus.chef_version = :latest
+
+  config.vm.define :dbmaster do |dbmaster|
+    dbmaster.vm.box = "centos-6.5"
+    dbmaster.vm.box_url = "https://ca9f9b62ae1b1e47c4f8-989e703834df24142dff402333777a7c.ssl.cf1.rackcdn.com/centos-6.5-provisionerless.box"
+    dbmaster.vm.network :private_network, ip: "192.168.12.20"
+    dbmaster.vm.hostname = 'dbmaster'
+    dbmaster.vm.provision :chef_client do |chef|
+      chef.json = {
+        :vagrant => {
+          :ip => "192.168.12.20"
+        },
+        :postgresql => {
+          :discovery => {
+            :enabled => true,
+            :ip_attribute => 'vagrant.ip'
+          },
+          :replication => {
+            :enabled => true  
+          }
+        }
+      }
+      chef.run_list = [
+          "recipe[barbican-postgresql]"
+      ]
+    end
+
+  end
+
+  config.vm.define :dbslave do |dbslave|
+    dbslave.vm.box = "centos-6.5"
+    dbslave.vm.box_url = "https://ca9f9b62ae1b1e47c4f8-989e703834df24142dff402333777a7c.ssl.cf1.rackcdn.com/centos-6.5-provisionerless.box"
+    dbslave.vm.network :private_network, ip: "192.168.12.30"
+    dbslave.vm.hostname = 'dbslave'
+    dbslave.vm.provision :chef_client do |chef|
+      chef.json = {
+        :vagrant => {
+          :ip => "192.168.12.30"
+        },
+        :postgresql => {
+          :discovery => {
+            :enabled => true,
+            :ip_attribute => 'vagrant.ip'
+          },
+          :replication => {
+            :enabled => true  
+          }
+        }
+      }
+      chef.run_list = [
+          "recipe[barbican-postgresql]"
+      ]
+    end
+
+  end
+
+
+end

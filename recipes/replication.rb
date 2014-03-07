@@ -43,7 +43,7 @@ end
 directory '/var/lib/pgsql/.ssh/' do
   owner 'postgres'
   group 'postgres'
-  mode '0755'
+  mode '0700'
   action :create
 end
 
