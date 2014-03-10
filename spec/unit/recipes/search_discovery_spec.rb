@@ -72,12 +72,12 @@ describe 'barbican-postgresql::search_discovery' do
 
   it 'master detects slaves in sorted order' do
     # stub out slave nodes
-    p_slave_1 = stub_node('postgres-slave-1', :platform => 'centos', :version => '6.5', :ipaddress => '192.168.12.30') do |node|
+    p_slave_1 = stub_node('postgres-slave-1') do |node|
       node.automatic['ipaddress'] = '192.168.1.40'
       node.set['node_group']['tag'] = 'database'
       node.set['postgresql']['replication']['node_type'] = 'slave'
     end
-    p_slave_2 = stub_node('postgres-slave-2', :platform => 'centos', :version => '6.5') do |node|
+    p_slave_2 = stub_node('postgres-slave-2') do |node|
       node.automatic['ipaddress'] = '192.168.1.30'
       node.set['node_group']['tag'] = 'database'
       node.set['postgresql']['replication']['node_type'] = 'slave'
