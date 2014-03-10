@@ -1,5 +1,5 @@
 require 'spec_helper'
-require '/Users/stev1090/dev/cloudkeep-ops/barbican-postgresql/libraries/select_ip_attribute'
+require './libraries/select_ip_attribute'
 include ::Extensions
 
 describe  'select_ip_attribute' do
