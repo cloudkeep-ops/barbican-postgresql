@@ -1,5 +1,6 @@
 default['node_group']['tag'] = 'database'
 
+default['postgresql']['password']['postgres'] = 'postgres' # this is only set for chef-solo
 default['postgresql']['password']['barbican'] = 'barbican'
 
 default['postgresql']['db_actions']['retries'] = 3
@@ -12,6 +13,7 @@ normal['postgresql']['server']['packages'] = %w{ postgresql93-server }
 normal['postgresql']['server']['service_name'] = 'postgresql-9.3'
 normal['postgresql']['contrib']['packages'] = %w{ postgresql93-contrib }
 normal['postgresql']['config']['listen_addresses'] = '*'
+
 normal['postgresql']['pg_hba'] = [
   {
     :comment => "# 'local' is for Unix domain socket connections only",

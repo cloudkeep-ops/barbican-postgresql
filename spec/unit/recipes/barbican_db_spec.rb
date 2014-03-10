@@ -1,25 +1,9 @@
 require 'spec_helper'
 
-describe 'barbican-postgresql::default' do
+describe 'barbican-postgresql::barbican_db' do
   let(:chef_run) do
-    # a hack because fauxhai does not include 'memory' stanza
-    # TODO: stevendgonzales make a pull request to fau
-    @chef_run = ::ChefSpec::Runner.new do |node|
-      node.set['memory']['total'] = '49416564kB'
-    end
+    @chef_run = ::ChefSpec::Runner.new
     @chef_run.converge(described_recipe)
-  end
-
-  it 'includes postgres recipes' do
-    expect(chef_run).to include_recipe('postgresql')
-    expect(chef_run).to include_recipe('postgresql::server')
-    expect(chef_run).to include_recipe('postgresql::config_pgtune')
-    expect(chef_run).to include_recipe('postgresql::server')
-  end
-
-   # uses default queue values of databag not specified
-  it 'uses default barbican password' do
-    expect(chef_run.node['postgresql']['password']['barbican']).to eq 'barbican'
   end
 
   it 'creates barbican_api database' do

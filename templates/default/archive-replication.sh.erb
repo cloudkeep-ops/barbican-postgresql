@@ -1,0 +1,5 @@
+rsync -e "ssh -o StrictHostKeyChecking=no" -a ${PGDATA}/$1 postgres@<%= @ip %>:<%= node['postgresql']['pg_wal_dir'] %>
+if [ $? != 0 ]
+then
+  exit 1
+fi
