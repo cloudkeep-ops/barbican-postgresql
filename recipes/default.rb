@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'barbican-postgresql::search_discovery' if node['postgresql']['discovery']['enabled']
+include_recipe 'barbican-postgresql::search_discovery' if node['postgresql']['discovery']['enabled'] && !node['postgresql']['replication']['failover']
+
+include_recipe 'barbican-postgresql::failover' if node['postgresql']['replication']['failover']
 
 include_recipe 'postgresql'
 include_recipe 'postgresql::server'

@@ -10,9 +10,8 @@ describe 'barbican-postgresql::replication' do
     @chef_run.converge(described_recipe)
   end
 
-  it 'includes postgres recipes' do
-    # expect(chef_run).to include_recipe('postgresql')
-    # expect(chef_run).to include_recipe('postgresql::server')
+  it 'includes pg_hba_rules recipe' do
+    expect(chef_run).to include_recipe('barbican-postgresql::pg_hba_rules')
   end
 
   it 'create pg_wal directory' do

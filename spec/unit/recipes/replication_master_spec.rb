@@ -28,7 +28,7 @@ describe 'barbican-postgresql::replication_master' do
   end
 
   it 'creates repmgr db user' do
-    expect(chef_run).to create_database_user('barbican').with(
+    expect(chef_run).to create_database_user('repmgr').with(
       :connection => {
         :host => 'localhost',
         :port => chef_run.node['postgresql']['config']['port'],

@@ -99,6 +99,34 @@ replication_slave.rb
 ----------------------
 Called by the replication recipe after initialization.  Sets up pgpass file for replication user to communicate with master, performs a pg_basebackup from master, recovers from master with wal stream reading enabled, configures recovery.conf for use of slave must failover to master.
 
+## Failover Recipes
+
+The below descriptions outline the details of actions performed in each failover recipe.  The failover recipes require that the node have already been configured with the replication recipes.  The failover recipes are designed as one-off recipes to be used to recover from a failure of a postgresql master node.  Running failover will promote an existing slave node to be master, and will demote an existing master to slave.  
+
+Failover is initiated by setting node['postgresql']['replication']['failover'] = true.  This may be done with a knife node edit command, or by passing the attribute to the chef-client:
+
+```
+echo '{"postgresql": {"replication": {"failover": true}}}' | sudo chef-client -j /dev/stdin
+```
+
+The json is piped into the chef-client command through stdin because the -j paramter only acceots a file containing json.  
+
+The chef-client also has a -o parameter to run one-off recipes, but this command does not save back changes made to node attributes which is extremely important for failover comfigurations.  YOu can not use a node.save in this scenario either or it will modify the run-list with the one-off recipe.  This is why the above chef-client was chosen for initiating failover.
+
+By running the above command the node will enter failover mode and recovery will begin.  This command should first be run on the slave node that is to be promoted, and then on the master node that is to be demoted.  After using this command normal chef-client commands will be used as the nodes will be reconfigured for the new master or slave role.
+
+failover.rb
+---------------
+Control recipe for failover operations.  Determines which failover recipe to run based on whether the node is master or slave.  Also takes the node out of failover mode at the end of the run by setting node['postgresql']['replication']['failover'] = false.
+
+failover_slave_to_master.rb
+----------------------------
+Executes the pg_ctl promote command to promote the slave to master and schedules a delayed restart of the postgresql service.  Runs a ruby block that validates that the node is no longer in recovery mode.  Sets all node attributes to configure node as a master.
+
+failover_master_to_slave.rb
+----------------------------
+Deletes master specific config values from the node['postgresql']['config'] block.  Deletes archive-replication file if it exists, and delets the replication backup dir.  The backupdir is deleted because it will be re-created when the slave reinitializes, but will fail if its contents are not empty.  Sets all node attributes to configure node as a slave.
+
 ## Author
 
 Author:: Rackspace, Inc. (<cloudkeep@googlegroups.com>)

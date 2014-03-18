@@ -6,50 +6,6 @@ describe 'barbican-postgresql::search_discovery' do
     @chef_run.converge(described_recipe)
   end
 
-  let(:base_pg_hba) do
-    @base_pg_hba = [
-      {
-        'comment' => "# 'local' is for Unix domain socket connections only",
-        'type' => 'local',
-        'db' => 'all',
-        'user' => 'postgres',
-        'addr' => nil,
-        'method' => 'ident'
-      },
-      {
-        'type' => 'local',
-        'db' => 'all',
-        'user' => 'all',
-        'addr' => nil,
-        'method' => 'ident'
-      },
-      {
-        'comment' => '# Open external comms with database',
-        'type' => 'host',
-        'db' => 'all',
-        'user' => 'all',
-        'addr' => '0.0.0.0/0',
-        'method' => 'md5'
-      },
-      {
-        'comment' => '# Open localhost comms with database',
-        'type' => 'host',
-        'db' => 'all',
-        'user' => 'all',
-        'addr' => '127.0.0.1/32',
-        'method' => 'trust'
-      },
-      {
-        'comment' => '# Open IPv6 localhost comms with database',
-        'type' => 'host',
-        'db' => 'all',
-        'user' => 'all',
-        'addr' => '::1/128',
-        'method' => 'md5'
-      }
-    ]
-  end
-
   it 'only node assigns itself master' do
     chef_run.node.set['postgresql']['replication']['node_type'] = nil
     chef_run.converge(described_recipe)
@@ -57,17 +13,6 @@ describe 'barbican-postgresql::search_discovery' do
     expect(chef_run.node['postgresql']['replication']['master_address']).to eq chef_run.node['ipaddress']
     expect(chef_run.node['postgresql']['replication']['slave_addresses']).to eq []
 
-    # test pg_hba ACL rules
-    expected_pg_hba = base_pg_hba
-    expected_pg_hba << {
-      'comment' => '# Replication ACL',
-      'type' => 'host',
-      'db' => 'replication',
-      'user' => 'repmgr',
-      'addr' => '0.0.0.0/0',
-      'method' => 'md5'
-    }
-    expect(chef_run.node['postgresql']['pg_hba']).to eq expected_pg_hba
   end
 
   it 'master detects slaves in sorted order' do
@@ -94,21 +39,6 @@ describe 'barbican-postgresql::search_discovery' do
     expect(chef_run.node['postgresql']['replication']['node_type']).to eq 'master'
     expect(chef_run.node['postgresql']['replication']['master_address']).to eq chef_run.node['ipaddress']
 
-    # test pg_hba ACL rules
-    expected_pg_hba = base_pg_hba
-    # slave rules should be in reverse order since they are sorted
-    [p_slave_2, p_slave_1].each do |slave|
-      expected_pg_hba << {
-      'comment' => '# Replication ACL',
-      'type' => 'host',
-      'db' => 'replication',
-      'user' => 'repmgr',
-      'addr' => "#{slave['ipaddress']}/32",
-      'method' => 'md5'
-    }
-    end
-
-    expect(chef_run.node['postgresql']['pg_hba']).to eq expected_pg_hba
   end
 
   it 'node detects master and assigns itself slave' do
@@ -124,17 +54,6 @@ describe 'barbican-postgresql::search_discovery' do
     expect(chef_run.node['postgresql']['replication']['node_type']).to eq 'slave'
     expect(chef_run.node['postgresql']['replication']['master_address']).to eq p_master['ipaddress']
 
-    # test pg_hba ACL rules
-    expected_pg_hba = base_pg_hba
-    expected_pg_hba << {
-      'comment' => '# Replication ACL',
-      'type' => 'host',
-      'db' => 'replication',
-      'user' => 'repmgr',
-      'addr' => "#{p_master['ipaddress']}/32",
-      'method' => 'md5'
-    }
-    expect(chef_run.node['postgresql']['pg_hba']).to eq expected_pg_hba
   end
 
 end
