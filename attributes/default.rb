@@ -8,6 +8,8 @@ default['postgresql']['db_actions']['retry_delay'] = 30
 
 normal['postgresql']['enable_pgdg_yum'] = true
 normal['postgresql']['version'] = '9.3'
+# Explicitly define Postgresql-9.3 client packages so that 8.4 doesn't by default get installed (Centos-6.5 weirdness!)
+normal['postgresql']['client']['packages'] = %w{postgresql93 }
 normal['postgresql']['dir'] = '/var/lib/pgsql/9.3/data'
 normal['postgresql']['server']['packages'] = %w{ postgresql93-server }
 normal['postgresql']['server']['service_name'] = 'postgresql-9.3'
