@@ -4,7 +4,7 @@ default['postgresql']['password']['repmgr'] = 'barbican'
 default['postgresql']['replication']['node_type'] = nil # set to master | slave
 default['postgresql']['replication']['backup_dir'] = "#{node['postgresql']['dir']}/../../repbackup"
 default['postgresql']['replication']['failover'] = false
-default['postgresql']['replication']['master_address'] = 'localhost'
+default['postgresql']['replication']['master_address'] = '127.0.0.1'
 default['postgresql']['replication']['slave_addresses'] = []
 default['postgresql']['pg_wal_dir'] = "#{node['postgresql']['dir']}/pg_wal"
 

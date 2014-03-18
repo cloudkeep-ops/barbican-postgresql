@@ -28,6 +28,8 @@ end
 
 Chef::Log.info 'Configuring postgresql replication'
 
+include_recipe 'barbican-postgresql::pg_hba_rules'
+
 # Create pg_wal directory for storing of WAL records
 directory node['postgresql']['pg_wal_dir'] do
   owner 'postgres'
