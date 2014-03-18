@@ -25,7 +25,7 @@ describe 'barbican-postgresql::default' do
   end
 
   it 'does not include search discovery failover is enabled' do
-    chef_run.node.set['postgresql']['discovery']['enabled'] = false
+    chef_run.node.set['postgresql']['discovery']['enabled'] = true
     chef_run.node.set['postgresql']['replication']['failover'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to_not include_recipe('barbican-postgresql::search_discovery')
@@ -35,6 +35,12 @@ describe 'barbican-postgresql::default' do
     chef_run.node.set['postgresql']['replication']['failover'] = true
     chef_run.converge(described_recipe)
     expect(chef_run).to include_recipe('barbican-postgresql::failover')
+  end
+
+  it 'does not include failover if disabled' do
+    chef_run.node.set['postgresql']['replication']['failover'] = false
+    chef_run.converge(described_recipe)
+    expect(chef_run).not_to include_recipe('barbican-postgresql::failover')
   end
 
   it 'includes postgres recipes' do
