@@ -20,6 +20,7 @@
 include_recipe 'barbican-postgresql::search_discovery' if node['postgresql']['discovery']['enabled'] && !node['postgresql']['replication']['failover']
 
 include_recipe 'barbican-postgresql::failover' if node['postgresql']['replication']['failover']
+# We need the below to workaround Build-essential 2.0.0 hard failing an attribute deprecation warning. Not good practice!
 node.override['build-essential']['compile_time'] = false
 include_recipe 'postgresql'
 # For use with PGTune.
