@@ -9,6 +9,7 @@ default['postgresql']['db_actions']['retry_delay'] = 30
 normal['postgresql']['enable_pgdg_yum'] = true
 normal['postgresql']['version'] = '9.3'
 normal['postgresql']['dir'] = '/var/lib/pgsql/9.3/data'
+normal['postgresql']['client']['packages'] = %w{ postgresql93 postgresql93-devel }
 normal['postgresql']['server']['packages'] = %w{ postgresql93-server }
 normal['postgresql']['server']['service_name'] = 'postgresql-9.3'
 normal['postgresql']['contrib']['packages'] = %w{ postgresql93-contrib }
